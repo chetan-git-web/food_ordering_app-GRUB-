@@ -21,7 +21,7 @@ import userConfig from "./components/Context";
 import { Provider } from "react-redux";
 import store from "./utils/store";
 
-const AppComponent = () => {
+const App = () => {
   const [islogin, setislogin] = useState(false);
   const [user, setuser] = useState({
     name: "",
@@ -43,7 +43,7 @@ const AppComponent = () => {
 const appRouter = createBrowserRouter([
   {
     path: "/",
-    element: <AppComponent />,
+    element: <App />,
     errorElement: <ErrorElement />,
     children: [
       {
