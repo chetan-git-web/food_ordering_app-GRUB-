@@ -7,15 +7,13 @@ import useRestsurantItems from "../hooks/useRestaurantItems";
 const Menu=()=>{
     const {id}=useParams();
 
-    // const img=RestaurantData?.data?.cards[0]?.card?.card?.info?.cloudinaryImageId;
     const RestroMenu=useRestsurantItems(id);
     return(
         <>
-        {/* <h1> Restaurant id:{id}</h1> */}
         <div>
             {
-                RestroMenu.map((restro)=>{
-                    return <RestroItems {...restro?.card?.card}/>
+                RestroMenu[0].map((restro)=>{
+                    return <RestroItems {...restro?.card?.card} name= {RestroMenu[1]}/>
                 })
             }
         </div>

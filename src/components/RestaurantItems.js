@@ -8,11 +8,12 @@ import { additem } from "../utils/cardslice";
 import { useDispatch } from "react-redux/es/hooks/useDispatch";
 import { useSelector } from "react-redux";
 import { addprice } from "../utils/priceSlice";
+import SameRestroDialogue from "./SameRestroDialogue";
 
 
 // categories
 
-const RestroItems = ({ title, itemCards, categories }) => {
+const RestroItems = ({ title, itemCards, categories, name}) => {
   const [isShow, setisshow] = useState(false);
   if (title === undefined) {
     return <></>;
@@ -49,11 +50,11 @@ const RestroItems = ({ title, itemCards, categories }) => {
         itemCards === undefined ? (
           categories !== undefined &&
           categories.map((restro) => {
-            return <RestrofoodCategories {...restro} />;
+            return <RestrofoodCategories {...restro} name={name}/>;
           })
         ) : (
           itemCards.map((restro) => {
-            return <Restrofooditems {...restro.card.info} />;
+            return <Restrofooditems {...restro.card.info} restroname={name}/>;
           })
         )
       ) : (
@@ -66,7 +67,7 @@ export default RestroItems;
 
 // subcategory
 
-const RestrofoodCategories = ({ title, itemCards }) => {
+const RestrofoodCategories = ({ title, itemCards,name}) => {
   const [isshow, setisshow] = useState(false);
   return (
     <>
@@ -91,13 +92,13 @@ const RestrofoodCategories = ({ title, itemCards }) => {
       </div>
       {isshow &&
         itemCards.map((restro) => {
-          return <Restrofooditems {...restro.card.info} />;
+          return <Restrofooditems {...restro.card.info} restroname={name} />;
         })}
     </>
   );
 };
 
-// real cart cart items
+// real cart items
 
 const Restrofooditems = ({
   name,
@@ -106,7 +107,10 @@ const Restrofooditems = ({
   price,
   description,
   imageId,
+  restroname
+  
 }) => {
+  console.log(restroname);
   const dispatch = useDispatch();
   const handleadditem = () => {
     dispatch(
@@ -123,8 +127,10 @@ const Restrofooditems = ({
   };
 
   const handleprice = () => {
+    // dispatch price
     dispatch(addprice(price / 100));
   };
+  const alreadyrestro = useSelector(store => store.restro.value);
 
   return (
     <div className="p-4 w-full h-[200px]">
@@ -159,8 +165,19 @@ const Restrofooditems = ({
             <button
               className="text-[20px] font-bold text-green-500 mx-auto"
               onClick={() => {
-                handleadditem();
-                handleprice();
+
+                if(alreadyrestro === ""){
+                  handleadditem();
+                  handleprice();
+                }
+                else if(alreadyrestro === restroname){
+                  handleadditem();
+                  handleprice();
+                }
+                else{
+                  <SameRestroDialogue/>
+                }
+                
               }}
             >
               ADD

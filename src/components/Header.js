@@ -1,14 +1,11 @@
 import { Link } from "react-router-dom";
 import logomain from "../logo/logo.jpg";
-import home from "../logo/home.svg";
-import { useState } from "react";
 import userConfig from "./Context";
 import { useContext } from "react";
-import { UseSelector, useSelector } from "react-redux/es/hooks/useSelector";
+import { useSelector } from "react-redux/es/hooks/useSelector";
 const HeaderComponent = ({islogin,setislogin}) => {
   const {user,setuser} = useContext(userConfig)
   const cartitems =useSelector(store => store.cart.items);
-
   return (
     <div className="flex justify-center p-[9px] gap-[300px] shadow-lg">
       <Link to={"/"}>

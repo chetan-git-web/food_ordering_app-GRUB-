@@ -14,12 +14,13 @@ import CartItems from "./components/Cart";
 import Menu from "./components/RestaurantMenu";
 import ErrorElement from "./components/ErrorRoute";
 import Profile from "./components/Profile";
-import Instmart from "./components/Instamart";
 import Loginpage from "./components/Login";
 import { useState } from "react";
 import userConfig from "./components/Context";
 import { Provider } from "react-redux";
 import store from "./utils/store";
+
+
 
 const App = () => {
   const [islogin, setislogin] = useState(false);
@@ -33,7 +34,7 @@ const App = () => {
     <Provider store={store}>
       <userConfig.Provider value={{ user: user, setuser: setuser }}>
         <HeaderComponent islogin={islogin} setislogin={setislogin}/>
-        <Outlet />
+        <Outlet/>
         <Footer />
       </userConfig.Provider>
     </Provider>
@@ -76,10 +77,7 @@ const appRouter = createBrowserRouter([
         path: "/restaurant/:id",
         element: <Menu />,
       },
-      {
-        path: "/instamart",
-        element: <Instmart />,
-      },
+      
     ],
   },
 ]);

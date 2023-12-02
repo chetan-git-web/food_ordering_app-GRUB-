@@ -1,5 +1,4 @@
 import { useState } from "react"
-// import { ChevronDownIcon } from '@heroicons/react/20/solid'
 import { Switch } from '@headlessui/react'
 
 
@@ -9,6 +8,7 @@ function classNames(...classes) {
 
 const Contact=()=> {
   const [agreed, setAgreed] = useState(false)
+  // contact page
 
   return (
     <div className="isolate bg-white px-6 py-24 sm:py-32 lg:px-8">

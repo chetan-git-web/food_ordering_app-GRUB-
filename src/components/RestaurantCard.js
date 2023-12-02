@@ -18,7 +18,9 @@ export const RestaurantCard = ({
           <img className="" src={IMG_URL + cloudinaryImageId} alt="" />
         </div>
         <div className="px-3">
-          <h1 className="text-gray-800 font-semibold text-[18px] truncate">{name}</h1>
+          <h1 className="text-gray-800 font-semibold text-[18px] truncate">
+            {name}
+          </h1>
           {avgRatingString === "NEW" ? (
             <h1></h1>
           ) : (
