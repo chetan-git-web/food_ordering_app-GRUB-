@@ -17,6 +17,7 @@ const Loginpage = () => {
       </h1>
       <div>
         <input
+        type="text"
         size={50}
           placeholder={"Username"}
           onChange={(e) => {
@@ -24,11 +25,12 @@ const Loginpage = () => {
           }}
           className="mx-[50px] mt-14 bg-gray-50 outline-none"
         ></input>
-        <div className=" h-[1px] bg-black mx-[50px]"> </div>
+        <div className=" h-[1px] bg-gray-600 mx-[50px]"> </div>
 
       </div>
       <div>
         <input
+        type="email"
         size={50}
           placeholder="Enter your email"
           onChange={(e) => {
@@ -37,10 +39,11 @@ const Loginpage = () => {
           className="mx-[50px] mt-8 outline-none bg-gray-50"
         ></input>
         
-        <div className=" h-[1px] bg-black mx-[50px]"> </div>
+        <div className=" h-[2px] bg-gray-600 mx-[50px]"> </div>
       </div>
       <div>
         <input
+        type="password"
         size={50}
           placeholder="Password"
           onChange={(e) => {
@@ -48,7 +51,7 @@ const Loginpage = () => {
           }}
           className="mx-[50px] mt-8 outline-none bg-gray-50"
         ></input>
-        <div className=" h-[1px] bg-black mx-[50px]"> </div>
+        <div className=" h-[2px] bg-gray-600 mx-[50px]"> </div>
       </div>
       <div className="my-10">
         <Link

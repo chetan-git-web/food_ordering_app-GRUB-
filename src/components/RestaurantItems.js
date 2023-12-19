@@ -9,11 +9,12 @@ import { useDispatch } from "react-redux/es/hooks/useDispatch";
 import { useSelector } from "react-redux";
 import { addprice } from "../utils/priceSlice";
 import SameRestroDialogue from "./SameRestroDialogue";
-
+import { add } from "../utils/restroslice";
+import { Link } from "react-router-dom";
 
 // categories
 
-const RestroItems = ({ title, itemCards, categories, name}) => {
+const RestroItems = ({ title, itemCards, categories, name }) => {
   const [isShow, setisshow] = useState(false);
   if (title === undefined) {
     return <></>;
@@ -50,11 +51,11 @@ const RestroItems = ({ title, itemCards, categories, name}) => {
         itemCards === undefined ? (
           categories !== undefined &&
           categories.map((restro) => {
-            return <RestrofoodCategories {...restro} name={name}/>;
+            return <RestrofoodCategories {...restro} name={name} />;
           })
         ) : (
           itemCards.map((restro) => {
-            return <Restrofooditems {...restro.card.info} restroname={name}/>;
+            return <Restrofooditems {...restro.card.info} restroname={name} />;
           })
         )
       ) : (
@@ -67,7 +68,7 @@ export default RestroItems;
 
 // subcategory
 
-const RestrofoodCategories = ({ title, itemCards,name}) => {
+const RestrofoodCategories = ({ title, itemCards, name }) => {
   const [isshow, setisshow] = useState(false);
   return (
     <>
@@ -107,10 +108,8 @@ const Restrofooditems = ({
   price,
   description,
   imageId,
-  restroname
-  
+  restroname,
 }) => {
-  console.log(restroname);
   const dispatch = useDispatch();
   const handleadditem = () => {
     dispatch(
@@ -126,11 +125,16 @@ const Restrofooditems = ({
     //dispatch an action and pass the payload
   };
 
+  const [effect, setEffect] = useState(false);
+
   const handleprice = () => {
     // dispatch price
     dispatch(addprice(price / 100));
   };
-  const alreadyrestro = useSelector(store => store.restro.value);
+  const handlerestro = () => {
+    dispatch(add(restroname));
+  };
+  const alreadyrestro = useSelector((store) => store.restro.value);
 
   return (
     <div className="p-4 w-full h-[200px]">
@@ -161,27 +165,40 @@ const Restrofooditems = ({
               ></img>
             )}
           </div>
-          <div className="w-[100px] h-[40px] border-[1px] shadow-md rounded-md flex justify-between px-3">
-            <button
-              className="text-[20px] font-bold text-green-500 mx-auto"
+          <div className="w-[100px] h-[40px] border-[1px] shadow-md rounded-md flex justify-between px-3 hover:bg-red-50">
+            {
+              console.log(alreadyrestro)
+            }
+            {alreadyrestro == "" || alreadyrestro == restroname ? (
+              <button
+              className={`${
+                effect && "animate-wiggle"
+              } text-[20px] font-bold text-red-500 mx-auto hover:bg-red-50 w-[100px]`}
               onClick={() => {
-
-                if(alreadyrestro === ""){
-                  handleadditem();
+                setEffect(true);
+                handleadditem();
                   handleprice();
-                }
-                else if(alreadyrestro === restroname){
-                  handleadditem();
-                  handleprice();
-                }
-                else{
-                  <SameRestroDialogue/>
-                }
-                
+                  handlerestro();
               }}
+              onAnimationEnd={() => setEffect(false)}
             >
-              ADD
-            </button>
+              
+                ADD
+              </button>
+            ) : (
+              <button
+              className={`${
+                effect && "animate-wiggle"
+              } text-[20px] font-bold text-red-500 mx-auto hover:bg-red-50 w-[100px] px-3`}
+              onClick={() => {
+                setEffect(true);
+                alert("You have already added meals from different restraunt.....                  Remove that from cart😊")
+              }}
+              onAnimationEnd={() => setEffect(false)}
+            >
+                ADD
+              </button>
+            )}
           </div>
         </div>
       </div>
