@@ -4,6 +4,7 @@ import nonveg from "../logo/non-veg.svg";
 import { removeaction } from "../utils/cardslice";
 import { substractprice } from "../utils/priceSlice";
 import alternativeimg from "../logo/Alt.png";
+import { add } from "../utils/restroslice";
 
 const CartItems = () => {
   // restaurant in cart
@@ -16,12 +17,21 @@ const CartItems = () => {
   const Substract = (item) => {
     dispatch(substractprice(item.price / 100));
   };
+  const handlerestro = () => {
+    dispatch(add(""));
+  };
+  if(CartItems.length===0){
+    handlerestro();
+  }
 
   return (
+    
+    
     <>
-      <div className="mx-[300px] border border-black rounded-2xl">
+      <div className="mx-[300px] ">
         {CartItems.length === 0 ? (
-          <h1 className=" text-[100px] w-[800px] mx-auto mt-20">
+          
+          <h1 className=" text-[50px] w-[400px] mx-auto mt-20 my-auto">
             Your cart is Empty
           </h1>
         ) : (
@@ -79,6 +89,7 @@ const CartItems = () => {
                         onClick={() => {
                           Remove(item);
                           Substract(item);
+                          
                         }}
                       >
                         Remove
@@ -92,8 +103,34 @@ const CartItems = () => {
           })
         )}
       </div>
-      <div className="ml-[1320px]">
-        <h1 className="text-[20px] ">Total:</h1>Rs {priceofitems}
+
+      <div className="w-[300px] ml-[69rem] mb-10">
+        <div className="flex w-[300px] justify-between">
+          <h1 className="text-[20px] font-semibold">SubTotal:</h1>
+          <h1 className="text-[20px]">Rs.{priceofitems}</h1>
+        </div>
+        <div className="bg-gray-200 h-[1px] w-full my-3"></div>
+        <div className="flex w-[300px] justify-between">
+          <h1 className="text-[20px] font-semibold">Taxes(18%): </h1>
+          <h1 className="text-[20px] ">{priceofitems % 18}</h1>
+        </div>
+        <div className="bg-gray-200 h-[1px] w-full my-3"></div>
+
+        <div className="flex w-[300px] justify-between">
+          <h1 className="text-[20px] font-semibold">CouponCode:</h1>
+          <div>
+            <a className="text-[20px]" href="#">
+              Add Coupon
+            </a>
+            <div className="bg-black h-[1px] w-full"></div>
+          </div>
+        </div>
+        <div className="bg-gray-200 h-[1px] w-full my-3"></div>
+
+        <div className="flex w-[300px] justify-between">
+          <h1 className="text-[20px] font-semibold">GrandTotal:</h1>
+          <h1 className="text-[40px] ">Rs {priceofitems + (priceofitems % 18)}</h1>
+        </div>
       </div>
     </>
   );

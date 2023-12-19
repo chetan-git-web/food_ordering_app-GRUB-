@@ -7,7 +7,7 @@ const priceSlice = createSlice({
     },
     reducers:{
       addprice:(state,action)=>{
-        console.log(state.totalprice)
+       
         state.totalprice+=action.payload;
       },
       substractprice:(state,action)=>{

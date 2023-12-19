@@ -8,9 +8,7 @@ import { additem } from "../utils/cardslice";
 import { useDispatch } from "react-redux/es/hooks/useDispatch";
 import { useSelector } from "react-redux";
 import { addprice } from "../utils/priceSlice";
-import SameRestroDialogue from "./SameRestroDialogue";
 import { add } from "../utils/restroslice";
-import { Link } from "react-router-dom";
 
 // categories
 
@@ -166,9 +164,7 @@ const Restrofooditems = ({
             )}
           </div>
           <div className="w-[100px] h-[40px] border-[1px] shadow-md rounded-md flex justify-between px-3 hover:bg-red-50">
-            {
-              console.log(alreadyrestro)
-            }
+            
             {alreadyrestro == "" || alreadyrestro == restroname ? (
               <button
               className={`${
