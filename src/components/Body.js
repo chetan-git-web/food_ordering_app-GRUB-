@@ -8,6 +8,7 @@ const Body = () => {
   const [allrestro, setallrestro] = useState([]);
   const [filteredrestaurant, setfilteredrestaurant] = useState([]);
   const [searchValue, setsearchValue] = useState("");
+  console.log(allrestro);
 
   useEffect(() => {
     const getRestaurants = async () => {
@@ -16,6 +17,8 @@ const Body = () => {
         const latitude = await position.coords.latitude;
         const longitude = await position.coords.longitude;
         // api call 
+        console.log(latitude);
+        console.log(longitude);
         const data = await fetch(
           "https://www.swiggy.com/dapi/restaurants/list/v5?lat=" +
             latitude +
@@ -23,24 +26,27 @@ const Body = () => {
             longitude +
             "&is-seo-homepage-enabled=true&page_type=DESKTOP_WEB_LISTING"
         );
-
+          console.log(data);
         const json = await data.json();
+        console.log(json);
         if (json === undefined) {
+          console.log("bas yahi hai error")
           setallrestro([]);
           setfilteredrestaurant([]);
         } else {
           setallrestro(
-            json?.data?.cards[5]?.card?.card?.gridElements?.infoWithStyle
+            json?.data?.cards[4]?.card?.card?.gridElements?.infoWithStyle
               ?.restaurants
           );
           setfilteredrestaurant(
-            json?.data?.cards[5]?.card?.card?.gridElements?.infoWithStyle
+            json?.data?.cards[4]?.card?.card?.gridElements?.infoWithStyle
               ?.restaurants
           );
         }
       }
       //location failed fetch
       function error() {
+        console.log("error");
         <Error/>
       }
       // location using geolocation
