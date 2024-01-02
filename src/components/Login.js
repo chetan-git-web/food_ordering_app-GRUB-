@@ -1,74 +1,137 @@
-import { useContext, useState } from "react";
-import { Link } from "react-router-dom";
-// import { Context } from "react";
-import userConfig from "./Context";
-// import ReactDOM from "react-dom/client";
+import {  useRef, useState } from "react";
+import {  useNavigate } from "react-router-dom";
+import { auth } from "../utils/firebase";
+import { validateUser } from "../utils/validare";
+import { useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import { addUser, removeUser } from "../utils/userSlice";
+import { useSelector } from "react-redux";
+import {
+  createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
+  updateProfile,
+} from "firebase/auth";
 
 const Loginpage = () => {
-  const { user, setuser } = useContext(userConfig);
-  const [name, setname] = useState();
-  const [email, setemail] = useState();
-  const [password, setpassword] = useState();
+  const user = useSelector((store) => store.user);
+  const [isSignInForm, setIsSignInForm] = useState(true);
+  const [showerror, setshowerror] = useState("");
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const name = useRef(null);
+  const email = useRef(null);
+  const password = useRef(null);
+  const toggleSignInForm = () => {
+    setIsSignInForm(!isSignInForm);
+  };
+
+  const onclicklistener = () => {
+    const error = validateUser(email.current.value, password.current.value);
+
+    setshowerror(error);
+
+    if (error) {
+      return;
+    }
+
+    if (!isSignInForm) {
+      createUserWithEmailAndPassword(
+        auth,
+        email.current.value,
+        password.current.value
+      )
+        .then((userCredential) => {
+          const user = userCredential.user;
+          updateProfile(user, {
+            displayName: name.current.value,
+          })
+            .then(() => {
+              const { displayName, email, uid } = auth.currentUser;
+              dispatch(
+                addUser({ uid: uid, email: email, displayName: displayName })
+              );
+              // Profile updated!
+              // ...
+            })
+            .catch((error) => {
+              // An error occurred
+              // ...
+            });
+          navigate("/");
+        })
+        .catch((error) => {
+          const errorCode = error.code;
+          const errorMessage = error.message;
+          setshowerror(errorMessage);
+        });
+    } else {
+      signInWithEmailAndPassword(
+        auth,
+        email.current.value,
+        password.current.value
+      )
+        .then((userCredential) => {
+          const user = userCredential.user;
+          const { displayName, email, uid } = auth.currentUser;
+          dispatch(
+            addUser({ uid: uid, email: email, displayName: displayName })
+          );
+          navigate("/");
+        })
+        .catch((error) => {
+          const errorCode = error.code;
+          const errorMessage = error.message;
+        });
+    }
+  };
 
   return (
-    <div className="w-[500px] h-[500px]  mx-auto mt-[100px] border-black shadow-lg rounded-xl bg-gray-50 pt-14 mb-[54px]">
-      <h1 className="w-[80px] mx-auto font-bold text-[30px] text-gray-600 ">
-        LogIn
+    <form
+      onSubmit={(e) => e.preventDefault()}
+      className=" smartphone:w-[390px]  absolute p-12 bg-gray-200  my-[3rem]  desktop:my-[4rem] mx-[40rem] smartphone:mx-auto right-0 left-0 text-white rounded-lg bg-opacity-80"
+    >
+      <h1 className="font-bold text-2xl smartphone:text-3xl py-1 smartphone:py-4 text-gray-700 mb-3">
+        {isSignInForm ? "Sign In" : "Sign Up"}
       </h1>
-      <div>
-        <input
-        type="text"
-        size={50}
-          placeholder={"Username"}
-          onChange={(e) => {
-            setname(e.target.value);
-          }}
-          className="mx-[50px] mt-14 bg-gray-50 outline-none"
-        ></input>
-        <div className=" h-[1px] bg-gray-600 mx-[50px]"> </div>
 
-      </div>
-      <div>
+      {!isSignInForm && (
         <input
-        type="email"
-        size={50}
-          placeholder="Enter your email"
-          onChange={(e) => {
-            setemail(e.target.value);
-          }}
-          className="mx-[50px] mt-8 outline-none bg-gray-50"
-        ></input>
-        
-        <div className=" h-[2px] bg-gray-600 mx-[50px]"> </div>
-      </div>
-      <div>
-        <input
+          ref={name}
+          type="text"
+          placeholder="Full Name"
+          className="p-2 smartphone:p-4 my-4 w-full bg-gray-100 text-black outline-none"
+        />
+      )}
+      <input
+        ref={email}
+        type="text"
+        placeholder="Email Address"
+        className=" p-2 smartphone:p-4 my-4 w-full bg-gray-100 text-black outline-none"
+      />
+      <input
+        ref={password}
         type="password"
-        size={50}
-          placeholder="Password"
-          onChange={(e) => {
-            setpassword(e.target.value);
-          }}
-          className="mx-[50px] mt-8 outline-none bg-gray-50"
-        ></input>
-        <div className=" h-[2px] bg-gray-600 mx-[50px]"> </div>
-      </div>
-      <div className="my-10">
-        <Link
-          className="outline px-[180px] mx-[50px] py-[10px] rounded-md bg-gradient-to-l from-orange-500 via-red-500 to-pink-500 text-white"
-          onClick={() => {  
-            setuser({
-              name: name,
-              email: email,
-              password: password,
-            });
-          }}
-          to={"/"}
-        >
-          LOGIN
-        </Link>
-      </div>
-    </div>
+        placeholder="Password"
+        className="p-2 smartphone:p-4 my-4 w-full bg-gray-100 text-black outline-none"
+      />
+      <p className="font-bold text-red-600">{showerror}</p>
+      <button
+        className=" p-2 smartphone:p-4 my-6 bg-red-700 w-full rounded-lg"
+        onClick={() => {
+          onclicklistener();
+        }}
+      >
+        {isSignInForm ? "Sign In" : "Sign Up"}
+      </button>
+      <p
+        className="py-4 cursor-pointer text-gray-700"
+        onClick={toggleSignInForm}
+      >
+        {isSignInForm
+          ? "New to Netflix? Sign Up Now"
+          : "Already registered? Sign In Now."}
+      </p>
+    </form>
   );
 };
 export default Loginpage;

@@ -1,11 +1,38 @@
 import { Link } from "react-router-dom";
 import logomain from "../logo/logo.jpg";
-import userConfig from "./Context";
-import { useContext } from "react";
+import { useState } from "react";
 import { useSelector } from "react-redux/es/hooks/useSelector";
-const HeaderComponent = ({islogin,setislogin}) => {
-  const {user,setuser} = useContext(userConfig)
-  const cartitems =useSelector(store => store.cart.items);
+import { useRef, useEffect } from "react";
+import { getAuth } from "firebase/auth";
+import { signOut } from "firebase/auth";
+import { useNavigate } from "react-router-dom";
+import { addUser, removeUser } from "../utils/userSlice";
+import {auth} from "../utils/firebase";
+import useHeader from "../hooks/useHeader";
+const HeaderComponent = ({ islogin, setislogin }) => {
+  const dropdownRef = useRef(null);
+  const cartitems = useSelector((store) => store.cart.items);
+  useHeader();
+  const toggleDropdown = () => {
+    setIsOpen(!isOpen);
+  };
+  const navigate=useNavigate();
+
+  const user = useSelector((store) => store.user);
+  const [isOpen, setIsOpen] = useState(false);
+  useEffect(() => {
+    document.addEventListener("click", handleOutsideClick);
+
+    return () => {
+      document.removeEventListener("click", handleOutsideClick);
+    };
+  }, []);
+  const handleOutsideClick = (event) => {
+    // event.target retrun the element that we have clicked on
+    if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+      setIsOpen(false);
+    }
+  };
   return (
     <div className="flex justify-center p-[9px] gap-[300px] shadow-lg">
       <Link to={"/"}>
@@ -42,7 +69,7 @@ const HeaderComponent = ({islogin,setislogin}) => {
               </svg>
               Home{" "}
             </Link>
-          </li> 
+          </li>
           <li className="my-[20px]">
             <Link
               to={"/about"}
@@ -98,22 +125,63 @@ const HeaderComponent = ({islogin,setislogin}) => {
               Cart {cartitems.length}{" "}
             </Link>
           </li>
-          {
-            islogin
-          }
-          <li className="my-[20px] border border-black p-3 rounded-md bg-red-200 w-[80px] hover:bg-red-500 hover:text-white">
-            {islogin ? <Link  onClick={()=>{
-                setislogin(false)
-                setuser({
-                  name:"",
-                  email:"",
-                  password:""
-                })
-            }}> Logout</Link> : <Link className="ml-1" onClick={()=>{
-                setislogin(true)
-            }} to={"/login" } > LogIn</Link>}
-            
-          </li>
+          {islogin}
+          
+          <div className="relative inline-block text-left" ref={dropdownRef}>
+            <button
+              type="button"
+              onClick={toggleDropdown}
+              className="inline-flex text-gray-600 hover:text-red-500 justify-center items-center  text-sm font-medium   rounded-md  outline-none   "
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="40"
+                height="40"
+                fill="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path d="M12,2A10,10,0,0,0,4.65,18.76h0a10,10,0,0,0,14.7,0h0A10,10,0,0,0,12,2Zm0,18a8,8,0,0,1-5.55-2.25,6,6,0,0,1,11.1,0A8,8,0,0,1,12,20ZM10,10a2,2,0,1,1,2,2A2,2,0,0,1,10,10Zm8.91,6A8,8,0,0,0,15,12.62a4,4,0,1,0-6,0A8,8,0,0,0,5.09,16,7.92,7.92,0,0,1,4,12a8,8,0,0,1,16,0A7.92,7.92,0,0,1,18.91,16Z"></path>
+              </svg>
+            </button>
+
+            {isOpen && (
+              <div className=" z-20 origin-top-right absolute right-0 mt-2 w-40 smartphone:w-48 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5">
+                {user ? (
+                  <div className=" z-20 py-1">
+                    <div className=" z-20 block w-full text-left px-4 py-2 text-sm text-black font-bold ">
+                      {user.displayName}
+                    </div>
+                    <div className="z-20 block smartphone:w-48 text-left px-4 truncate text-sm text-black font-bold ">
+                      {user.email}
+                    </div>
+                    <div className="z-20 w-full h-[1px] bg-gray-500 my-3"></div>
+                    <button
+                      onClick={() => {
+                        signOut(auth)
+                          .then(() => {
+                           
+                          })
+                          .catch((error) => {
+                          });
+
+                        
+                      }}
+                      className=" z-20 block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                    >
+                      SignOut
+                    </button>
+                  </div>
+                ) : (
+                  <Link
+                    to={"/login"}
+                    className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                  >
+                   Login{" "}
+                  </Link>
+                )}
+              </div>
+            )}
+          </div>
         </ul>
       </div>
     </div>

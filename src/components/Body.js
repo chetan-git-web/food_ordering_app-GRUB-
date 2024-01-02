@@ -8,7 +8,6 @@ const Body = () => {
   const [allrestro, setallrestro] = useState([]);
   const [filteredrestaurant, setfilteredrestaurant] = useState([]);
   const [searchValue, setsearchValue] = useState("");
-  console.log(allrestro);
 
   useEffect(() => {
     const getRestaurants = async () => {
@@ -17,20 +16,12 @@ const Body = () => {
         const latitude = await position.coords.latitude;
         const longitude = await position.coords.longitude;
         // api call 
-        console.log(latitude);
-        console.log(longitude);
+    
         const data = await fetch(
-          "https://www.swiggy.com/dapi/restaurants/list/v5?lat=" +
-            latitude +
-            "&lng=" +
-            longitude +
-            "&is-seo-homepage-enabled=true&page_type=DESKTOP_WEB_LISTING"
-        );
-          console.log(data);
+          "https://www.swiggy.com/dapi/restaurants/list/v5?lat=30.8606522&lng=75.8168998&is-seo-homepage-enabled=true&page_type=DESKTOP_WEB_LISTING");
         const json = await data.json();
-        console.log(json);
+       
         if (json === undefined) {
-          console.log("bas yahi hai error")
           setallrestro([]);
           setfilteredrestaurant([]);
         } else {
@@ -46,7 +37,6 @@ const Body = () => {
       }
       //location failed fetch
       function error() {
-        console.log("error");
         <Error/>
       }
       // location using geolocation
