@@ -131,7 +131,8 @@ const CartItems = () => {
         )}
       </div>
 
-      <div className="w-[300px] ml-[69rem] mb-10">
+      {
+        CartItems.length!=0?<div className="w-[300px] ml-[69rem] mb-10">
         <div className="flex w-[300px] justify-between">
           <h1 className="text-[20px] font-semibold">SubTotal:</h1>
           <h1 className="text-[20px]">Rs.{priceofitems}</h1>
@@ -173,7 +174,8 @@ const CartItems = () => {
           {" "}
           Checkout{" "}
         </button>
-      </div>
+      </div>:<></>
+      }
     </>
   );
 };
