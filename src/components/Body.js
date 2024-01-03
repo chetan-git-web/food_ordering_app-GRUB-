@@ -1,5 +1,5 @@
 import { RestaurantCard } from "./RestaurantCard";
-import React, { useContext, useEffect, useState } from "react";
+import React, {  useEffect, useState } from "react";
 import Shimm from "./Shimmer";
 import { searchFilterRestro } from "../utils/helper";
 import useOnline from "../hooks/useOnline";
@@ -9,40 +9,43 @@ const Body = () => {
   const [filteredrestaurant, setfilteredrestaurant] = useState([]);
   const [searchValue, setsearchValue] = useState("");
 
+
+
   useEffect(() => {
     const getRestaurants = async () => {
-      //location success fetch
-      async function success(position) {
-        const latitude = await position.coords.latitude;
-        const longitude = await position.coords.longitude;
-        // api call 
-    
-        const data = await fetch(
-          "https://www.swiggy.com/dapi/restaurants/list/v5?lat=30.8606522&lng=75.8168998&is-seo-homepage-enabled=true&page_type=DESKTOP_WEB_LISTING");
-        const json = await data.json();
-       
-        if (json === undefined) {
-          setallrestro([]);
-          setfilteredrestaurant([]);
-        } else {
+      try {
+        const position = await new Promise((resolve, reject) => {
+          navigator.geolocation.getCurrentPosition(resolve, reject);
+        });
+        const latitude = position.coords.latitude;
+        const longitude = position.coords.longitude;
+
+        const response = await fetch(
+          "https://www.swiggy.com/dapi/restaurants/list/v5?lat=" +
+            latitude +
+            "&lng=" +
+            longitude +
+            "&is-seo-homepage-enabled=true&page_type=DESKTOP_WEB_LISTING"
+        );
+        const json = await response.json();
+
+        if (json?.data?.cards[4]?.card?.card?.gridElements?.infoWithStyle?.restaurants) {
           setallrestro(
-            json?.data?.cards[4]?.card?.card?.gridElements?.infoWithStyle
-              ?.restaurants
+            json.data.cards[4].card.card.gridElements.infoWithStyle.restaurants
           );
           setfilteredrestaurant(
-            json?.data?.cards[4]?.card?.card?.gridElements?.infoWithStyle
-              ?.restaurants
+            json.data.cards[4].card.card.gridElements.infoWithStyle.restaurants
           );
+        } else {
+          setallrestro([]);
+          setfilteredrestaurant([]);
         }
+      } catch (error) {
+        console.error("Error fetching data:", error);
+        // Handle the error as needed
       }
-      //location failed fetch
-      function error() {
-        <Error/>
-      }
-      // location using geolocation
-      const location = navigator.geolocation.getCurrentPosition(success, error);
-
     };
+
     getRestaurants();
   }, []);
 
@@ -57,7 +60,7 @@ const Body = () => {
 
   // if online return online page
   
-  return allrestro.length == 0 ? (
+  return (allrestro.length === 0 ? (
     <Shimm />
   ) : (
     <div className="mt-10">
@@ -103,15 +106,15 @@ const Body = () => {
 
       {/* // this is restaurant cards */}
       <div className="flex flex-wrap gap-[30px] px-[210px] ">
-        {filteredrestaurant.length == 0 ? (
+        {allrestro && allrestro.length === 0 ? (
           <h1>not found</h1>
         ) : (
           filteredrestaurant.map((restaurant) => {
-            return <RestaurantCard {...restaurant.info} />;
+            return <RestaurantCard key={restaurant.id} {...restaurant.info} />;
           })
         )}
       </div>
-    </div>
+    </div>)
   );
 };
 export default Body;

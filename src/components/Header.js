@@ -3,22 +3,21 @@ import logomain from "../logo/logo.jpg";
 import { useState } from "react";
 import { useSelector } from "react-redux/es/hooks/useSelector";
 import { useRef, useEffect } from "react";
-import { getAuth } from "firebase/auth";
 import { signOut } from "firebase/auth";
-import { useNavigate } from "react-router-dom";
-import { addUser, removeUser } from "../utils/userSlice";
 import {auth} from "../utils/firebase";
 import useHeader from "../hooks/useHeader";
-const HeaderComponent = ({ islogin, setislogin }) => {
-  const dropdownRef = useRef(null);
+const HeaderComponent = () => {
+  
   const cartitems = useSelector((store) => store.cart.items);
+  // custom hook
   useHeader();
+  const dropdownRef = useRef(null);
+  const user = useSelector((store) => store.user);
+  // for drop down menu
   const toggleDropdown = () => {
     setIsOpen(!isOpen);
   };
-  const navigate=useNavigate();
 
-  const user = useSelector((store) => store.user);
   const [isOpen, setIsOpen] = useState(false);
   useEffect(() => {
     document.addEventListener("click", handleOutsideClick);
@@ -125,7 +124,7 @@ const HeaderComponent = ({ islogin, setislogin }) => {
               Cart {cartitems.length}{" "}
             </Link>
           </li>
-          {islogin}
+          
           
           <div className="relative inline-block text-left" ref={dropdownRef}>
             <button

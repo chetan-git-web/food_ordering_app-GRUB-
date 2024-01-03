@@ -1,6 +1,4 @@
-import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom"
-import { IMG_URL } from "./Config";
 import RestroItems from "./RestaurantItems";
 import useRestsurantItems from "../hooks/useRestaurantItems";
 

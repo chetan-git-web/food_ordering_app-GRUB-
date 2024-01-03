@@ -1,10 +1,8 @@
 import React from "react";
-import { useSelector } from "react-redux";
 import bg from "../logo/bg.jpg";
 
 // just shows the about page
 const About = () => {
-  const output = useSelector((store) => store.cart.items);
 
   return (
     <>

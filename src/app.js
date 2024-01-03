@@ -16,27 +16,23 @@ import ErrorElement from "./components/ErrorRoute";
 import Profile from "./components/Profile";
 import Loginpage from "./components/Login";
 import { useState } from "react";
-import userConfig from "./components/Context";
 import { Provider } from "react-redux";
 import store from "./utils/store";
+import Success from "./components/Success";
+import Cancel from "./components/Cancel";
 
 
 
 const App = () => {
-  const [islogin, setislogin] = useState(false);
-  const [user, setuser] = useState({
-    name: "",
-    email: "",
-    password: "",
-  });
+  
 
   return (
     <Provider store={store}>
-      <userConfig.Provider value={{ user: user, setuser: setuser }}>
-        <HeaderComponent islogin={islogin} setislogin={setislogin}/>
+    
+        <HeaderComponent/>
         <Outlet/>
         <Footer />
-      </userConfig.Provider>
+
     </Provider>
   );
 };
@@ -77,6 +73,14 @@ const appRouter = createBrowserRouter([
         path: "/restaurant/:id",
         element: <Menu />,
       },
+      {
+        path: "/success",
+        element:<Success/>
+      },
+      {
+        path:"/cancel",
+        element:<Cancel/>
+      }
       
     ],
   },
