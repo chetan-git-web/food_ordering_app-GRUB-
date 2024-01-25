@@ -4,6 +4,7 @@ const app = express();
 const cors = require("cors");
 const stripe = require("stripe")("sk_test_51OU06pSAmzsQrsfHcQbyFSCx6osZXWZgLkVU1EsRwBH2xqswsFc84RqEKVRaYxBJtnxVWWAPmOGZKFJwcXku6g7I00jB7ysBQq");
 const BASE_URL = process.env.BASE_URL;
+const PORT = process.env.PORT || 7000;
 app.use(express.json());
 app.use(cors());
 
@@ -36,6 +37,6 @@ app.post("/api/create-checkout-session", async (req, res) => {
 })
 
 
-app.listen(7000, () => {
+app.listen(PORT, () => {
     console.log("server start")
 })
