@@ -24,14 +24,14 @@ import Cancel from "./components/Cancel";
 
 
 const App = () => {
-  
+
 
   return (
     <Provider store={store}>
-    
-        <HeaderComponent/>
-        <Outlet/>
-        <Footer />
+
+      <HeaderComponent />
+      <Outlet />
+      <Footer />
 
     </Provider>
   );
@@ -75,13 +75,13 @@ const appRouter = createBrowserRouter([
       },
       {
         path: "/success",
-        element:<Success/>
+        element: <Success />
       },
       {
-        path:"/cancel",
-        element:<Cancel/>
+        path: "/cancel",
+        element: <Cancel />
       }
-      
+
     ],
   },
 ]);

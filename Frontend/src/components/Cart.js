@@ -37,7 +37,7 @@ const CartItems = () => {
     const headers = {
       "Content-Type": "application/json"
     }
-    const response = await fetch("http://localhost:7000/api/create-checkout-session", {
+    const response = await fetch("https://food-ordering-application-9rzm.onrender.com/api/create-checkout-session", {
       method: "POST",
       headers: headers,
       body: JSON.stringify(body)
@@ -51,7 +51,7 @@ const CartItems = () => {
     });
 
     if (result.error) {
-      <ErrorElement/>
+      <ErrorElement />
     }
   };
 
@@ -132,49 +132,49 @@ const CartItems = () => {
       </div>
 
       {
-        CartItems.length!=0?<div className="w-[300px] ml-[69rem] mb-10">
-        <div className="flex w-[300px] justify-between">
-          <h1 className="text-[20px] font-semibold">SubTotal:</h1>
-          <h1 className="text-[20px]">Rs.{priceofitems}</h1>
-        </div>
-        <div className="bg-gray-200 h-[1px] w-full my-3"></div>
-        <div className="flex w-[300px] justify-between">
-          <h1 className="text-[20px] font-semibold">Taxes(18%): </h1>
-          <h1 className="text-[20px] ">{priceofitems % 18}</h1>
-        </div>
-        <div className="bg-gray-200 h-[1px] w-full my-3"></div>
-
-        <div className="flex w-[300px] justify-between">
-          <h1 className="text-[20px] font-semibold">CouponCode:</h1>
-          <div>
-            <a className="text-[20px]" href="#">
-              Add Coupon
-            </a>
-            <div className="bg-black h-[1px] w-full"></div>
+        CartItems.length != 0 ? <div className="w-[300px] ml-[69rem] mb-10">
+          <div className="flex w-[300px] justify-between">
+            <h1 className="text-[20px] font-semibold">SubTotal:</h1>
+            <h1 className="text-[20px]">Rs.{priceofitems}</h1>
           </div>
-        </div>
-        <div className="bg-gray-200 h-[1px] w-full my-3"></div>
+          <div className="bg-gray-200 h-[1px] w-full my-3"></div>
+          <div className="flex w-[300px] justify-between">
+            <h1 className="text-[20px] font-semibold">Taxes(18%): </h1>
+            <h1 className="text-[20px] ">{priceofitems % 18}</h1>
+          </div>
+          <div className="bg-gray-200 h-[1px] w-full my-3"></div>
 
-        <div className="flex w-[300px] justify-between">
-          <h1 className="text-[20px] font-semibold">GrandTotal:</h1>
-          <h1 className="text-[40px] ">
-            Rs {priceofitems + (priceofitems % 18)}
-          </h1>
-        </div>
-        <button
-          className="w-full h-10 bg-green-400 text-white rounded-lg focus:bg-green-600"
-          onClick={() => {
-            if (user) {
-              makepayment();
-            } else {
-              alert("Login / Signup First To order things from GRUB ❤️");
-            }
-          }}
-        >
-          {" "}
-          Checkout{" "}
-        </button>
-      </div>:<></>
+          <div className="flex w-[300px] justify-between">
+            <h1 className="text-[20px] font-semibold">CouponCode:</h1>
+            <div>
+              <a className="text-[20px]" href="#">
+                Add Coupon
+              </a>
+              <div className="bg-black h-[1px] w-full"></div>
+            </div>
+          </div>
+          <div className="bg-gray-200 h-[1px] w-full my-3"></div>
+
+          <div className="flex w-[300px] justify-between">
+            <h1 className="text-[20px] font-semibold">GrandTotal:</h1>
+            <h1 className="text-[40px] ">
+              Rs {priceofitems + (priceofitems % 18)}
+            </h1>
+          </div>
+          <button
+            className="w-full h-10 bg-green-400 text-white rounded-lg focus:bg-green-600"
+            onClick={() => {
+              if (user) {
+                makepayment();
+              } else {
+                alert("Login / Signup First To order things from GRUB ❤️");
+              }
+            }}
+          >
+            {" "}
+            Checkout{" "}
+          </button>
+        </div> : <></>
       }
     </>
   );

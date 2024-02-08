@@ -1,5 +1,5 @@
 import { RestaurantCard } from "./RestaurantCard";
-import React, {  useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import Shimm from "./Shimmer";
 import { searchFilterRestro } from "../utils/helper";
 import useOnline from "../hooks/useOnline";
@@ -22,12 +22,13 @@ const Body = () => {
 
         const response = await fetch(
           "https://www.swiggy.com/dapi/restaurants/list/v5?lat=" +
-            latitude +
-            "&lng=" +
-            longitude +
-            "&is-seo-homepage-enabled=true&page_type=DESKTOP_WEB_LISTING"
+          latitude +
+          "&lng=" +
+          longitude +
+          "&is-seo-homepage-enabled=true&page_type=DESKTOP_WEB_LISTING"
         );
         const json = await response.json();
+        console.log(json);
 
         if (json?.data?.cards[4]?.card?.card?.gridElements?.infoWithStyle?.restaurants) {
           setallrestro(
@@ -51,7 +52,7 @@ const Body = () => {
 
 
 
-// custom hook useOnline
+  // custom hook useOnline
   const isOnline = useOnline();
   // if online return offline page
   if (!isOnline) {
@@ -59,7 +60,7 @@ const Body = () => {
   }
 
   // if online return online page
-  
+
   return (allrestro.length === 0 ? (
     <Shimm />
   ) : (
