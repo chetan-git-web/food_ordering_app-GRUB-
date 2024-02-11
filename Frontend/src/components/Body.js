@@ -20,7 +20,7 @@ const Body = () => {
         const longitude = position.coords.longitude;
 
         const response = await fetch(
-          `http://localhost:7000/api/restaurants?lat=${latitude}&lng=${longitude}`,
+          `https://food-ordering-application-9rzm.onrender.com/api/restaurants?lat=${latitude}&lng=${longitude}`,
           {
             method: "GET",
           }
