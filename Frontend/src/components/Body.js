@@ -15,17 +15,17 @@ const Body = () => {
         const position = await new Promise((resolve, reject) => {
           navigator.geolocation.getCurrentPosition(resolve, reject);
         });
-        // calculating latitude and longitude
+
         const latitude = position.coords.latitude;
         const longitude = position.coords.longitude;
 
         const response = await fetch(
-          "https://www.swiggy.com/dapi/restaurants/list/v5?lat=" +
-            latitude +
-            "&lng=" +
-            longitude +
-            "&is-seo-homepage-enabled=true&page_type=DESKTOP_WEB_LISTING"
+          `http://localhost:7000/api/restaurants?lat=${latitude}&lng=${longitude}`,
+          {
+            method: "GET",
+          }
         );
+
         const json = await response.json();
         console.log(json);
 
