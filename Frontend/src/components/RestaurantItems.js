@@ -11,7 +11,6 @@ import { addprice } from "../utils/priceSlice";
 import { add } from "../utils/restroslice";
 
 // categories
-
 const RestroItems = ({ title, itemCards, categories, name }) => {
   const [isShow, setisshow] = useState(false);
   if (title === undefined) {
@@ -19,8 +18,7 @@ const RestroItems = ({ title, itemCards, categories, name }) => {
   }
   // it is called accordian
   return (
-    <div className="gap-[10px] mx-[200px]">
-      <div className="h-2 w-auto bg-gray-100"></div>
+    <div className="mx-[10vw]">
       <div className="my-[30px]">
         <a
           className="flex justify-between hover:cursor-pointer"
@@ -69,31 +67,27 @@ export default RestroItems;
 const RestrofoodCategories = ({ title, itemCards, name }) => {
   const [isshow, setisshow] = useState(false);
   return (
-    <>
-      <div className="flex  justify-between mx-[10px]">
+    <div className="mx-[3vw]">
+      <div className="my-[30px]">
         <a
-          className="flex justify-center hover:cursor-pointer"
+          className="flex justify-between hover:cursor-pointer"
           onClick={() => {
             setisshow(!isshow);
           }}
         >
-          <div className="flex gap-[220px]">
-            <h1 className="text-[25px] w-[1000px] font-semibold">{title}</h1>
-            {isshow ? (
-              <img className="w-[25px]" src={up}></img>
-            ) : (
-              <img className="w-[25px]" src={down}></img>
-            )}
-            <br></br>
-            <br></br>
-          </div>
+          <h1 className="text-[25px] font-semibold">{title}</h1>
+          {isshow ? (
+            <img className="w-[25px]" src={up}></img>
+          ) : (
+            <img className="w-[25px]" src={down}></img>
+          )}
         </a>
       </div>
       {isshow &&
         itemCards.map((restro) => {
           return <Restrofooditems {...restro.card.info} restroname={name} />;
         })}
-    </>
+    </div>
   );
 };
 
@@ -164,34 +158,34 @@ const Restrofooditems = ({
             )}
           </div>
           <div className="w-[100px] h-[40px] border-[1px] shadow-md rounded-md flex justify-between px-3 hover:bg-red-50">
-            
             {alreadyrestro == "" || alreadyrestro == restroname ? (
               <button
-              className={`${
-                effect && "animate-wiggle"
-              } text-[20px] font-bold text-red-500 mx-auto hover:bg-red-50 w-[100px]`}
-              onClick={() => {
-                setEffect(true);
-                handleadditem();
+                className={`${
+                  effect && "animate-wiggle"
+                } text-[20px] font-bold text-red-500 mx-auto hover:bg-red-50 w-[100px]`}
+                onClick={() => {
+                  setEffect(true);
+                  handleadditem();
                   handleprice();
                   handlerestro();
-              }}
-              onAnimationEnd={() => setEffect(false)}
-            >
-              
+                }}
+                onAnimationEnd={() => setEffect(false)}
+              >
                 ADD
               </button>
             ) : (
               <button
-              className={`${
-                effect && "animate-wiggle"
-              } text-[20px] font-bold text-red-500 mx-auto hover:bg-red-50 w-[100px] px-3`}
-              onClick={() => {
-                setEffect(true);
-                alert("You have already added meals from different restraunt.....                  Remove that from cart😊")
-              }}
-              onAnimationEnd={() => setEffect(false)}
-            >
+                className={`${
+                  effect && "animate-wiggle"
+                } text-[20px] font-bold text-red-500 mx-auto hover:bg-red-50 w-[100px] px-3`}
+                onClick={() => {
+                  setEffect(true);
+                  alert(
+                    "You have already added meals from different restraunt.....                  Remove that from cart😊"
+                  );
+                }}
+                onAnimationEnd={() => setEffect(false)}
+              >
                 ADD
               </button>
             )}

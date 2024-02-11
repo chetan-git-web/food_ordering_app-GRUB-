@@ -9,28 +9,30 @@ const Body = () => {
   const [filteredrestaurant, setfilteredrestaurant] = useState([]);
   const [searchValue, setsearchValue] = useState("");
 
-
-
   useEffect(() => {
     const getRestaurants = async () => {
       try {
         const position = await new Promise((resolve, reject) => {
           navigator.geolocation.getCurrentPosition(resolve, reject);
         });
+        // calculating latitude and longitude
         const latitude = position.coords.latitude;
         const longitude = position.coords.longitude;
 
         const response = await fetch(
           "https://www.swiggy.com/dapi/restaurants/list/v5?lat=" +
-          latitude +
-          "&lng=" +
-          longitude +
-          "&is-seo-homepage-enabled=true&page_type=DESKTOP_WEB_LISTING"
+            latitude +
+            "&lng=" +
+            longitude +
+            "&is-seo-homepage-enabled=true&page_type=DESKTOP_WEB_LISTING"
         );
         const json = await response.json();
         console.log(json);
 
-        if (json?.data?.cards[4]?.card?.card?.gridElements?.infoWithStyle?.restaurants) {
+        if (
+          json?.data?.cards[4]?.card?.card?.gridElements?.infoWithStyle
+            ?.restaurants
+        ) {
           setallrestro(
             json.data.cards[4].card.card.gridElements.infoWithStyle.restaurants
           );
@@ -50,8 +52,6 @@ const Body = () => {
     getRestaurants();
   }, []);
 
-
-
   // custom hook useOnline
   const isOnline = useOnline();
   // if online return offline page
@@ -61,7 +61,7 @@ const Body = () => {
 
   // if online return online page
 
-  return (allrestro.length === 0 ? (
+  return allrestro.length === 0 ? (
     <Shimm />
   ) : (
     <div className="mt-10">
@@ -106,7 +106,7 @@ const Body = () => {
       </div>
 
       {/* // this is restaurant cards */}
-      <div className="flex flex-wrap gap-[30px] px-[210px] ">
+      <div className="flex flex-wrap justify-between gap-y-10 px-[210px] ">
         {allrestro && allrestro.length === 0 ? (
           <h1>not found</h1>
         ) : (
@@ -115,7 +115,7 @@ const Body = () => {
           })
         )}
       </div>
-    </div>)
+    </div>
   );
 };
 export default Body;

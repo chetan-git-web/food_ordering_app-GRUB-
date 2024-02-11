@@ -21,18 +21,12 @@ import store from "./utils/store";
 import Success from "./components/Success";
 import Cancel from "./components/Cancel";
 
-
-
 const App = () => {
-
-
   return (
     <Provider store={store}>
-
       <HeaderComponent />
       <Outlet />
       <Footer />
-
     </Provider>
   );
 };
@@ -75,20 +69,18 @@ const appRouter = createBrowserRouter([
       },
       {
         path: "/success",
-        element: <Success />
+        element: <Success />,
       },
       {
         path: "/cancel",
-        element: <Cancel />
-      }
-
+        element: <Cancel />,
+      },
     ],
   },
 ]);
 const root = ReactDOM.createRoot(document.getElementById("root"));
 
 root.render(<RouterProvider router={appRouter} />);
-
 
 /**
  * Header

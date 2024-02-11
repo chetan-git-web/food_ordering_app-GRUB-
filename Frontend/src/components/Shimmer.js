@@ -3,7 +3,7 @@ const Shimmer = () => (
   >
     <div className=" ml-[210px] w-[1080px] h-[60px] my-[60px]  bg-gray-200"></div>
     <div
-      className="flex flex-wrap gap-[30px]  px-[210px] pt-[20px]"
+      className="flex flex-wrap justify-between gap-[30px]  px-[210px] pt-[20px]"
       key="shimmer"
     >
       {Array(10)
