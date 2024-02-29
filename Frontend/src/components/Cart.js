@@ -30,28 +30,31 @@ const CartItems = () => {
   // payment
 
   const makepayment = async () => {
-    const stripe = await loadStripe("pk_test_51OU06pSAmzsQrsfH4W5EqbjHObwZ2aA2axE6x07CZlnN9IgxkE4vHFE9BvBMWjJmybsxPj6P5JZjTKDNBhZv9VNE00HJAhxbww");
+    const stripe = await loadStripe(
+      "pk_test_51OU06pSAmzsQrsfH4W5EqbjHObwZ2aA2axE6x07CZlnN9IgxkE4vHFE9BvBMWjJmybsxPj6P5JZjTKDNBhZv9VNE00HJAhxbww"
+    );
     const body = {
       products: CartItems,
-    }
+    };
     const headers = {
-      "Content-Type": "application/json"
-    }
-    const response = await fetch("https://food-ordering-application-9rzm.onrender.com/api/create-checkout-session", {
-      method: "POST",
-      headers: headers,
-      body: JSON.stringify(body)
-    });
-
-
+      "Content-Type": "application/json",
+    };
+    const response = await fetch(
+      "https://food-ordering-application-9rzm.onrender.com/api/create-checkout-session",
+      {
+        method: "POST",
+        headers: headers,
+        body: JSON.stringify(body),
+      }
+    );
 
     const session = await response.json();
     const result = stripe.redirectToCheckout({
-      sessionId: session.id
+      sessionId: session.id,
     });
 
     if (result.error) {
-      <ErrorElement />
+      <ErrorElement />;
     }
   };
 
@@ -131,8 +134,8 @@ const CartItems = () => {
         )}
       </div>
 
-      {
-        CartItems.length != 0 ? <div className="w-[300px] ml-[69rem] mb-10">
+      {CartItems.length != 0 ? (
+        <div className="w-[300px] ml-[69rem] mb-10">
           <div className="flex w-[300px] justify-between">
             <h1 className="text-[20px] font-semibold">SubTotal:</h1>
             <h1 className="text-[20px]">Rs.{priceofitems}</h1>
@@ -174,8 +177,10 @@ const CartItems = () => {
             {" "}
             Checkout{" "}
           </button>
-        </div> : <></>
-      }
+        </div>
+      ) : (
+        <></>
+      )}
     </>
   );
 };

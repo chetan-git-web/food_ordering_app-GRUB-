@@ -16,8 +16,12 @@ const useRestsurantItems = (id) => {
       }
     );
     const jsonObj = await data.json();
-
-    setdata(jsonObj?.data?.cards[2]?.groupedCard?.cardGroupMap?.REGULAR?.cards);
+    console.log(jsonObj);
+    const showdata = jsonObj?.data?.cards.filter((data) => {
+      return data.groupedCard != undefined;
+    });
+    console.log(showdata);
+    setdata(showdata[0]?.groupedCard?.cardGroupMap?.REGULAR?.cards);
     setname(jsonObj?.data?.cards[0]?.card?.card?.info?.name);
   }
   return [data, name];
